@@ -1,3 +1,4 @@
 {
+  "plugins": ["@babel/plugin-transform-runtime"], // Necesario para transpilar funciones asincronas, junto con el core "@babel/runtime"
   "presets": ["@babel/preset-env"]
 }
