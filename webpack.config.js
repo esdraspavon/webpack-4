@@ -5,11 +5,19 @@ module.exports = {
     home: path.resolve(__dirname, "src/js/index.js"),
     precios: path.resolve(__dirname, "src/js/precios.js"),
     contacto: path.resolve(__dirname, "src/js/contacto.js")
-  }, // Ruta del archivo principal de nuestra aplicación JS a ser procesado por Webpack. Se pueden tener varios Entry Points.
+  }, // Rutas de los archivos de nuestra aplicación JS a ser procesados por Webpack.
   mode: "development", // Modo de ejecucion
   output: {
     // Configuraciones para el archivo final que generará webpack
     path: path.resolve(__dirname, "dist"), // Direccion relativa a la posicion actual donde generará el bundle
     filename: "js/[name].js" // Nombre final del bundle, [name] corresponde al key de cada entry
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/, //cuando se tope con un archivo que cumpla con esta expresion regular, debe ser una expresion regular
+        use: ["style-loader", "css-loader"] // Que hacer al cumplir la regla
+      }
+    ]
   }
 };
