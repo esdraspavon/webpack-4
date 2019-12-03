@@ -41,7 +41,8 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(), //Plugin para que solo recarge los elementos modificados en el html y no toda la pagina
     new HtmlWebpackPlugin({
-      title: "webpack-dev-server" // Titulo del documento
+      title: "webpack-dev-server", // Titulo del documento
+      template: path.resolve(__dirname, "index.html") //basarse en este documento para crear el html
     })
     //Se comenta en desarrollo, porque es menos costoso añadir los estilos directo al archivo, que crear un nuevo archivo
     // new MiniCSSExtractPlugin({
