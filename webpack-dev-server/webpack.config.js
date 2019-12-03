@@ -1,6 +1,8 @@
 const path = require("path"); // Modulo de node y encargado de la gestion de rutas
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin"); // Modulo para empaquetar css fuera del js
-const HtmlWebpackPlugin = require("html-webpack-plugin"); //Modulo para generar un html con la configuracion de weback, js, css, etc
+const HtmlWebpackPlugin = require("html-webpack-plugin"); //Modulo para generar un html con la configuracion de webpack, js, css, etc
+const webpack = require("webpack");
+
 module.exports = {
   entry: {
     home: path.resolve(__dirname, "src/js/index.js")
@@ -10,26 +12,34 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "js/[name].js"
   },
+  devServer: {
+    hot: true, //Activamos el hot module replacement
+    open: true, // Abrir una pestaña del navegador al correr el sv
+    port: 9000
+  },
   module: {
     rules: [
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCSSExtractPlugin.loader // separa los archivos css
-          },
-          //"style-loader", // Inyecta el css al html
+          //Se comenta en desarrollo, porque es menos costoso añadir los archivos directo al archivo, que crear un nuevo archivo
+          // {
+          //   loader: MiniCSSExtractPlugin.loader // separa los archivos css
+          // },
+          "style-loader", // Inyecta el css al html
           "css-loader" //Carge los archivos css en js
         ]
       }
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(), //Plugin para que solo recarge los elementos modificados en el html y no toda la pagina
     new HtmlWebpackPlugin({
-      title: "Plugins" // Titulo del documento
-    }),
-    new MiniCSSExtractPlugin({
-      filename: "css/[name].css" // direccion y/o nombre del archivo final
+      title: "webpack-dev-server" // Titulo del documento
     })
+    //Se comenta en desarrollo, porque es menos costoso añadir los estilos directo al archivo, que crear un nuevo archivo
+    // new MiniCSSExtractPlugin({
+    //   filename: "css/[name].css" // direccion y/o nombre del archivo final
+    // })
   ]
 };
