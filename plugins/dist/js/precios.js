@@ -81,19 +81,19 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/precios.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./multi-entry-points/src/js/precios.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/js/precios.js":
-/*!***************************!*\
-  !*** ./src/js/precios.js ***!
-  \***************************/
+/***/ "./multi-entry-points/src/js/precios.js":
+/*!**********************************************!*\
+  !*** ./multi-entry-points/src/js/precios.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("console.log(\"Hola mundo desde precios\");\r\n\n\n//# sourceURL=webpack:///./src/js/precios.js?");
+eval("console.log('Hola mundo desde Webpack! precios')\n\n//# sourceURL=webpack:///./multi-entry-points/src/js/precios.js?");
 
 /***/ })
 
