@@ -4,6 +4,8 @@ const MiniCSSExtractPlugin = require("mini-css-extract-plugin"); // Modulo para 
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //Modulo para generar un html con la configuracion de webpack, js, css, etc
 const webpack = require("webpack");
 
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+
 module.exports = {
   entry: {
     app: path.resolve(__dirname, "src/index.js")
@@ -58,6 +60,12 @@ module.exports = {
     // })
     new webpack.DllReferencePlugin({
       manifest: require("./modules-manifest.json")
+    }),
+    new AddAssetHtmlPlugin({
+      filepath:path.resolve(__dirname, "dist/js/*.dll.js"), //que archivo/s quiero agreguar al html, el * es un comodin.
+      outputPath: 'js', //Direccion a donde va el/los archivo/s
+      publicPath: 'http://localhost:3001/' //Desde donde quiero leer el/los archivos, similar al publicpath del output de webpack
+
     })
   ]
 };
