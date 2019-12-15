@@ -4,7 +4,11 @@ const MiniCSSExtractPlugin = require("mini-css-extract-plugin"); // Modulo para 
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //Modulo para generar un html con la configuracion de webpack, js, css, etc
 const webpack = require("webpack");
 
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin'); //Modulo de limpieza
+
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -12,9 +16,12 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "js/[name].js",
+    filename: "js/[name].[hash].js", // Es bueno que los archivos que mandemos a produccion tengan un hash, ya que esto nos dará el beneficio de que el navegador no guarde el archivo en cache
     publicPath: "http://localhost:3001/",
     chunkFilename: "js/[id].[chunkhash].js"
+  },
+  optimization:{
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()]
   },
   module: {
     rules: [
@@ -40,7 +47,9 @@ module.exports = {
         use: {
           loader: "url-loader", // permite empaquetar las archivos anteriormente declarados
           options: {
-            limit: 1000 //cantidad de bits maximo de un archivo que se admitira para convertir a base 64
+            limit: 1000, // cantidad de bits maximo de un archivo que se admitira para convertir a base 64
+            name: '[hash].[ext]',
+            outputPath:'assets' // carpeta a donde irán los archivos
           }
         }
       }
@@ -48,8 +57,8 @@ module.exports = {
   },
   plugins: [
     new MiniCSSExtractPlugin({
-      filename: "css/[name].css",
-      chunkFilename: "css/[id].css"
+      filename: "css/[name].[hash].css",
+      chunkFilename: "css/[id].[hash].css"
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public/index.html") //basarse en este documento para crear el html
@@ -64,8 +73,11 @@ module.exports = {
     new AddAssetHtmlPlugin({
       filepath:path.resolve(__dirname, "dist/js/*.dll.js"), //que archivo/s quiero agreguar al html, el * es un comodin.
       outputPath: 'js', //Direccion a donde va el/los archivo/s
-      publicPath: 'http://localhost:3001/' //Desde donde quiero leer el/los archivos, similar al publicpath del output de webpack
+      publicPath: 'http://localhost:3001/js' //Desde donde quiero leer el/los archivos, similar al publicpath del output de webpack
 
+    }),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['**/app.*'],
     })
   ]
 };

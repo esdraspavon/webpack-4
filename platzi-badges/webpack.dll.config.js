@@ -1,5 +1,7 @@
 const path = require("path"); // Modulo de node y encargado de la gestion de rutas
 const webpack = require("webpack");
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -9,6 +11,9 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "js/[name].[hash].dll.js",
     library: "[name]" //Con esto enlazamos de manera global nuestro codigo
+  },
+  optimization:{
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()]
   },
   plugins: [
     new webpack.DllPlugin({
